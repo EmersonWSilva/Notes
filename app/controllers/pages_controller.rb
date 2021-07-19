@@ -1,27 +1,10 @@
 class PagesController < ApplicationController
   def home
-    @notes = Note.all
-  end
-
-  def index
-  end
-
-  def show
-  end
-
-  def create
-    @note = Note.new(note_params)
-    if @note.save
-      redirect_to @note
+    if params[:query].present?
+      @notes = Note.where(id: params[:query])
+    else
+      @notes = Note.all
     end
-  end
-
-  def destroy
-  end
-
-  private
-
-  def note_params
-    params.require(:note).permit(:title, :description)
+    @note = Note.new
   end
 end

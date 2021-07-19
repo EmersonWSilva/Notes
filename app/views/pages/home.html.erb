@@ -1,2 +1,52 @@
-<h1>Notes</h1>
+<h1 class="d-flex justify-content-center">Bloco de Notas</h1>
 
+<div class="col-3 offset-2 mb-5">
+  <div>
+    <span>Busque sua nota pela ID:<span>
+    <%= form_tag root_path, method: :get do %>
+        <%= text_field_tag :query,
+          params[:query],
+          class: "form-control mb-2",
+          placeholder: "Busque sua nota pela ID" 
+        %>
+        <%= submit_tag "Buscar", class:"btn btn-primary" %>
+    <% end %>
+  </div>
+   
+</div>
+
+<div class="offset-2">
+  <div class="form-group col-3">
+    <h1>Crie sua nota</h1>
+    <%= simple_form_for (@note) do |f| %>
+      <%= f.input :title, label: 'Titulo da nota:', input_html: { class:'form-control mb-2' } %>
+      <%= f.input :description, label: 'Descrição da nota:', input_html: { class:'form-control row-3 mb-2' }  %>
+      <%= f.button :submit, 'Crie a sua nota', class:'btn btn-primary' %>
+    <% end %>
+  </div>
+  <div>
+    <%= "Você possui #{@notes.length} notas" %>
+  </div>
+
+</div>
+
+<div class="justify-content-around d-flex flex-wrap h-20 align-items-center mx-auto">
+  <% if @notes.empty? %>
+    <div class='home_last_mssg'>
+      <span>Nenhuma nota criada até o momento!</span>
+    </div>
+  <% else %>
+    <div class="d-flex justify-content-around mr-4">
+      <% @notes.each do |note| %>
+        <div class="card mb-4" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><%= "ID: #{note.id} - Titulo: #{note.title}" %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= "Criada em: #{note.created_at}" %></h6>
+            <p class="card-text"><%= "Descrição: #{note.description}" %></p>
+            <a href="#" class="card-link"><%= link_to 'Apagar Nota', note, method: :delete, data: { confirm: 'Voce está certo disso?' } %></a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
